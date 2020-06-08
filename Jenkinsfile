@@ -8,14 +8,48 @@ pipeline {
     }
 
     stage('Test') {
-      steps {
-        mail(subject: 'Testing Alert', body: 'This is a test', charset: 'utf-8', from: 'luismendoza.samuel@gmail.com', to: 'luismendoza.samuel@gmail.com')
+      parallel {
+        stage('Test') {
+          steps {
+            echo 'Testing'
+          }
+        }
+
+        stage('DB Build') {
+          steps {
+            echo 'Building Database'
+          }
+        }
+
+        stage('Nest Unit Testing') {
+          steps {
+            echo 'Nest Testing'
+          }
+        }
+
+        stage('Angular Unit Testing') {
+          steps {
+            echo 'Angular Running Tests'
+          }
+        }
+
       }
     }
 
     stage('Staging') {
-      steps {
-        echo 'Staging'
+      parallel {
+        stage('Staging') {
+          steps {
+            echo 'Staging'
+          }
+        }
+
+        stage('Containerization') {
+          steps {
+            echo 'containerization'
+          }
+        }
+
       }
     }
 
